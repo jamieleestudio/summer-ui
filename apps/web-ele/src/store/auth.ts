@@ -10,7 +10,7 @@ import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
 import { ElNotification } from 'element-plus';
 import { defineStore } from 'pinia';
 
-import { getAccessCodesApi, getUserInfoApi, loginApi, logoutApi } from '#/api';
+import { loginApi, logoutApi } from '#/api';
 import { $t } from '#/locales';
 
 export const useAuthStore = defineStore('auth', () => {
@@ -24,6 +24,7 @@ export const useAuthStore = defineStore('auth', () => {
    * 异步处理登录操作
    * Asynchronously handle the login process
    * @param params 登录表单数据
+   * @param onSuccess
    */
   async function authLogin(
     params: Recordable<any>,
@@ -34,22 +35,21 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       loginLoading.value = true;
       const { accessToken } = await loginApi(params);
-
-      // 如果成功获取到 accessToken
+      console.log('accessToken', accessToken);
       if (accessToken) {
-        // 将 accessToken 存储到 accessStore 中
         accessStore.setAccessToken(accessToken);
-
-        // 获取用户信息并存储到 accessStore 中
-        const [fetchUserInfoResult, accessCodes] = await Promise.all([
-          fetchUserInfo(),
-          getAccessCodesApi(),
-        ]);
-
-        userInfo = fetchUserInfoResult;
-
+        userInfo = {
+          avatar: preferences.app.defaultAvatar,
+          desc: '',
+          homePath: preferences.app.defaultHomePath,
+          realName: '',
+          roles: [],
+          token: accessToken,
+          userId: '',
+          username: '',
+        };
         userStore.setUserInfo(userInfo);
-        accessStore.setAccessCodes(accessCodes);
+        accessStore.setAccessCodes([]);
 
         if (accessStore.loginExpired) {
           accessStore.setLoginExpired(false);
@@ -99,8 +99,20 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function fetchUserInfo() {
-    let userInfo: null | UserInfo = null;
-    userInfo = await getUserInfoApi();
+    const info = userStore.userInfo as UserInfo | null;
+    if (info) {
+      return info;
+    }
+    const userInfo: UserInfo = {
+      avatar: preferences.app.defaultAvatar,
+      desc: '',
+      homePath: preferences.app.defaultHomePath,
+      realName: '',
+      roles: [],
+      token: accessStore.accessToken || '',
+      userId: '',
+      username: '',
+    };
     userStore.setUserInfo(userInfo);
     return userInfo;
   }
