@@ -35,7 +35,6 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       loginLoading.value = true;
       const { accessToken } = await loginApi(params);
-      console.log('accessToken', accessToken);
       if (accessToken) {
         accessStore.setAccessToken(accessToken);
         userInfo = {
