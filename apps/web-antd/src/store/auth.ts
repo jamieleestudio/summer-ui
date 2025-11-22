@@ -10,7 +10,7 @@ import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
 import { notification } from 'ant-design-vue';
 import { defineStore } from 'pinia';
 
-import { getAccessCodesApi, getUserInfoApi, loginApi, logoutApi } from '#/api';
+import { loginApi, logoutApi } from '#/api';
 import { $t } from '#/locales';
 
 export const useAuthStore = defineStore('auth', () => {
@@ -61,7 +61,8 @@ export const useAuthStore = defineStore('auth', () => {
           onSuccess
             ? await onSuccess?.()
             : await router.push(
-                (userInfo && userInfo.homePath) || preferences.app.defaultHomePath,
+                (userInfo && userInfo.homePath) ||
+                  preferences.app.defaultHomePath,
               );
         }
 
@@ -116,7 +117,7 @@ export const useAuthStore = defineStore('auth', () => {
       // 添加缺失的必需属性
       desc: '系统管理员',
       token: '',
-      userId: '1'
+      userId: '1',
     };
     userStore.setUserInfo(userInfo);
     return userInfo;
