@@ -40,14 +40,19 @@ export const useAuthStore = defineStore('auth', () => {
         accessStore.setAccessToken(accessToken);
 
         // 获取用户信息并存储到 accessStore 中
-        const [fetchUserInfoResult, accessCodes] = await Promise.all([
-          fetchUserInfo(),
-          getAccessCodesApi(),
-        ]);
+        // 暂时注释掉接口调用，使用模拟数据
+        const fetchUserInfoResult = await fetchUserInfo();
+        // const [fetchUserInfoResult, accessCodes] = await Promise.all([
+        //   fetchUserInfo(),
+        //   getAccessCodesApi(),
+        // ]);
+        const accessCodes: string[] = []; // 模拟空权限码数组
 
         userInfo = fetchUserInfoResult;
 
-        userStore.setUserInfo(userInfo);
+        if (userInfo) {
+          userStore.setUserInfo(userInfo);
+        }
         accessStore.setAccessCodes(accessCodes);
 
         if (accessStore.loginExpired) {
@@ -56,13 +61,13 @@ export const useAuthStore = defineStore('auth', () => {
           onSuccess
             ? await onSuccess?.()
             : await router.push(
-                userInfo.homePath || preferences.app.defaultHomePath,
+                (userInfo && userInfo.homePath) || preferences.app.defaultHomePath,
               );
         }
 
         if (userInfo?.realName) {
           notification.success({
-            description: `${$t('authentication.loginSuccessDesc')}:${userInfo?.realName}`,
+            description: `${$t('authentication.loginSuccessDesc')}:${userInfo.realName}`,
             duration: 3,
             message: $t('authentication.loginSuccess'),
           });
@@ -99,7 +104,20 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function fetchUserInfo() {
     let userInfo: null | UserInfo = null;
-    userInfo = await getUserInfoApi();
+    // 暂时注释掉接口调用，使用模拟数据
+    // userInfo = await getUserInfoApi();
+    // 使用符合 UserInfo 类型的模拟数据
+    userInfo = {
+      username: 'admin',
+      realName: '管理员',
+      avatar: '',
+      homePath: '/analytics', // 修改为正确的路由路径，移除 dashboard 前缀
+      roles: ['admin'],
+      // 添加缺失的必需属性
+      desc: '系统管理员',
+      token: '',
+      userId: '1'
+    };
     userStore.setUserInfo(userInfo);
     return userInfo;
   }
