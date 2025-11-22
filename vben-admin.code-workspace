@@ -5,8 +5,8 @@
       "path": "apps/backend-mock",
     },
     {
-      "name": "@vben/web-ele",
-      "path": "apps/web-ele",
+      "name": "@vben/web",
+      "path": "apps/web",
     },
     {
       "name": "@vben/docs",
