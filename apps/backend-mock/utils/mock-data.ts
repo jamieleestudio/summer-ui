@@ -7,11 +7,6 @@ export interface UserInfo {
   homePath?: string;
 }
 
-export interface TimezoneOption {
-  offset: number;
-  timezone: string;
-}
-
 export const MOCK_USERS: UserInfo[] = [
   {
     id: 0,
@@ -281,7 +276,7 @@ export const MOCK_MENU_LIST = [
         children: [
           {
             id: 20_401,
-            pid: 202,
+            pid: 201,
             name: 'SystemDeptCreate',
             status: 1,
             type: 'button',
@@ -290,7 +285,7 @@ export const MOCK_MENU_LIST = [
           },
           {
             id: 20_402,
-            pid: 202,
+            pid: 201,
             name: 'SystemDeptEdit',
             status: 1,
             type: 'button',
@@ -299,7 +294,7 @@ export const MOCK_MENU_LIST = [
           },
           {
             id: 20_403,
-            pid: 202,
+            pid: 201,
             name: 'SystemDeptDelete',
             status: 1,
             type: 'button',
@@ -393,29 +388,3 @@ export function getMenuIds(menus: any[]) {
   });
   return ids;
 }
-
-/**
- * 时区选项
- */
-export const TIME_ZONE_OPTIONS: TimezoneOption[] = [
-  {
-    offset: -5,
-    timezone: 'America/New_York',
-  },
-  {
-    offset: 0,
-    timezone: 'Europe/London',
-  },
-  {
-    offset: 8,
-    timezone: 'Asia/Shanghai',
-  },
-  {
-    offset: 9,
-    timezone: 'Asia/Tokyo',
-  },
-  {
-    offset: 9,
-    timezone: 'Asia/Seoul',
-  },
-];

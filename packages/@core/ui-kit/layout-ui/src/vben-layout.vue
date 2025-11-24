@@ -10,7 +10,7 @@ import {
   useLayoutFooterStyle,
   useLayoutHeaderStyle,
 } from '@vben-core/composables';
-import { IconifyIcon } from '@vben-core/icons';
+import { Menu } from '@vben-core/icons';
 import { VbenIconButton } from '@vben-core/shadcn-ui';
 import { ELEMENT_ID_MAIN_CONTENT } from '@vben-core/shared/constants';
 
@@ -559,8 +559,7 @@ const idMainContent = ELEMENT_ID_MAIN_CONTENT;
               class="my-0 mr-1 rounded-md"
               @click="handleHeaderToggle"
             >
-              <IconifyIcon v-if="showSidebar" icon="ep:fold" />
-              <IconifyIcon v-else icon="ep:expand" />
+              <Menu class="size-4" />
             </VbenIconButton>
           </template>
           <slot name="header"></slot>

@@ -180,7 +180,7 @@ function escapeKeyDown(e: KeyboardEvent) {
   }
 }
 
-function handleOpenAutoFocus(e: Event) {
+function handerOpenAutoFocus(e: Event) {
   if (!openAutoFocus.value) {
     e?.preventDefault();
   }
@@ -208,12 +208,6 @@ function handleFocusOutside(e: Event) {
 const getForceMount = computed(() => {
   return !unref(destroyOnClose) && unref(firstOpened);
 });
-
-const handleOpened = () => {
-  requestAnimationFrame(() => {
-    props.modalApi?.onOpened();
-  });
-};
 
 function handleClosed() {
   isClosed.value = true;
@@ -259,8 +253,8 @@ function handleClosed() {
       @escape-key-down="escapeKeyDown"
       @focus-outside="handleFocusOutside"
       @interact-outside="interactOutside"
-      @open-auto-focus="handleOpenAutoFocus"
-      @opened="handleOpened"
+      @open-auto-focus="handerOpenAutoFocus"
+      @opened="() => modalApi?.onOpened()"
       @pointer-down-outside="pointerDownOutside"
     >
       <DialogHeader

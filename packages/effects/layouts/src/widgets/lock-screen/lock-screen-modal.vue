@@ -27,30 +27,29 @@ const emit = defineEmits<{
   submit: [Recordable<any>];
 }>();
 
-const [Form, { resetForm, validate, getValues, getFieldComponentRef }] =
-  useVbenForm(
-    reactive({
-      commonConfig: {
-        hideLabel: true,
-        hideRequiredMark: true,
-      },
-      schema: computed(() => [
-        {
-          component: 'VbenInputPassword' as const,
-          componentProps: {
-            placeholder: $t('ui.widgets.lockScreen.placeholder'),
-          },
-          fieldName: 'lockScreenPassword',
-          formFieldProps: { validateOnBlur: false },
-          label: $t('authentication.password'),
-          rules: z
-            .string()
-            .min(1, { message: $t('ui.widgets.lockScreen.placeholder') }),
+const [Form, { resetForm, validate, getValues }] = useVbenForm(
+  reactive({
+    commonConfig: {
+      hideLabel: true,
+      hideRequiredMark: true,
+    },
+    schema: computed(() => [
+      {
+        component: 'VbenInputPassword' as const,
+        componentProps: {
+          placeholder: $t('ui.widgets.lockScreen.placeholder'),
         },
-      ]),
-      showDefaultActions: false,
-    }),
-  );
+        fieldName: 'lockScreenPassword',
+        formFieldProps: { validateOnBlur: false },
+        label: $t('authentication.password'),
+        rules: z
+          .string()
+          .min(1, { message: $t('ui.widgets.lockScreen.placeholder') }),
+      },
+    ]),
+    showDefaultActions: false,
+  }),
+);
 
 const [Modal] = useVbenModal({
   onConfirm() {
@@ -60,13 +59,6 @@ const [Modal] = useVbenModal({
     if (isOpen) {
       resetForm();
     }
-  },
-  onOpened() {
-    requestAnimationFrame(() => {
-      getFieldComponentRef('lockScreenPassword')
-        ?.$el?.querySelector('[name="lockScreenPassword"]')
-        ?.focus();
-    });
   },
 });
 
