@@ -8,7 +8,7 @@ export namespace SystemRoleApi {
     id: string;
     name: string;
     permissions: string[];
-    remark?: string;
+    description?: string;
     status: 0 | 1;
   }
 }
@@ -17,10 +17,23 @@ export namespace SystemRoleApi {
  * 获取角色列表数据
  */
 async function getRoleList(params: Recordable<any>) {
-  return requestClient.get<Array<SystemRoleApi.SystemRole>>(
-    '/system/role/list',
-    { params },
-  );
+  const { page, pageSize, ...rest } = params || {};
+  const query = {
+    ...(typeof page === 'number' ? { page } : {}),
+    ...(typeof pageSize === 'number' ? { size: pageSize } : {}),
+    ...rest,
+  };
+  const data = await requestClient.get<any>('/roles', { params: query });
+
+  let items: Array<SystemRoleApi.SystemRole> = [];
+  if (!items.length) {
+    items = (data?.content ?? []) as Array<SystemRoleApi.SystemRole>;
+  }
+
+  const total: number =
+    data?.page?.totalElements ?? (Array.isArray(data) ? data.length : items.length);
+
+  return { items, total } as { items: Array<SystemRoleApi.SystemRole>; total: number };
 }
 
 /**
@@ -28,7 +41,7 @@ async function getRoleList(params: Recordable<any>) {
  * @param data 角色数据
  */
 async function createRole(data: Omit<SystemRoleApi.SystemRole, 'id'>) {
-  return requestClient.post('/system/role', data);
+  return requestClient.post('/roles', data);
 }
 
 /**
@@ -41,7 +54,7 @@ async function updateRole(
   id: string,
   data: Omit<SystemRoleApi.SystemRole, 'id'>,
 ) {
-  return requestClient.put(`/system/role/${id}`, data);
+  return requestClient.put(`/roles/${id}`, data);
 }
 
 /**
@@ -49,7 +62,7 @@ async function updateRole(
  * @param id 角色 ID
  */
 async function deleteRole(id: string) {
-  return requestClient.delete(`/system/role/${id}`);
+  return requestClient.delete(`/roles/${id}`);
 }
 
 export { createRole, deleteRole, getRoleList, updateRole };
