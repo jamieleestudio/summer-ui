@@ -116,7 +116,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
     treeConfig: {
       parentField: 'pid',
       rowField: 'id',
-      transform: false,
+      transform: true,
     },
   } as VxeTableGridOptions,
 });

@@ -94,9 +94,69 @@ export namespace SystemMenuApi {
  * 获取菜单数据列表
  */
 async function getMenuList() {
-  return requestClient.get<Array<SystemMenuApi.SystemMenu>>(
-    '/system/menu/list',
-  );
+  const data = await requestClient.get<any[]>('/permissions');
+  function mapType(v: any) {
+    if (typeof v === 'string') return v;
+    switch (v) {
+      case 0: {
+        return 'catalog';
+      }
+      case 1: {
+        return 'menu';
+      }
+      case 2: {
+        return 'embedded';
+      }
+      case 3: {
+        return 'link';
+      }
+      case 4: {
+        return 'button';
+      }
+      default: {
+        return String(v ?? 'menu');
+      }
+    }
+  }
+  return (Array.isArray(data) ? data : []).map((item: any) => {
+    const id = String(item.id ?? '');
+    const pid = item.pid ?? item.parentId ?? '';
+    const name = item.name ?? item.permissionName ?? '';
+    const title = item.title ?? name;
+    const type = mapType(item.type);
+    return {
+      id,
+      pid: String(pid),
+      name,
+      authCode: item.code ?? item.authCode ?? '',
+      path: item.path ?? '',
+      component: item.component ?? '',
+      type,
+      status: item.status,
+      meta: {
+        title,
+        icon: item.icon,
+        badge: item.badge,
+        badgeType: item.badgeType,
+        badgeVariants: item.badgeVariants,
+        keepAlive: item.keepAlive,
+        affixTab: item.affixTab,
+        hideInMenu: item.hideInMenu,
+        hideChildrenInMenu: item.hideChildrenInMenu,
+        hideInBreadcrumb: item.hideInBreadcrumb,
+        hideInTab: item.hideInTab,
+        activeIcon: item.activeIcon,
+        activePath: item.activePath,
+        openInNewWindow: item.openInNewWindow,
+        iframeSrc: item.iframeSrc,
+        link: item.link,
+        order: item.order,
+        query: item.query,
+        maxNumOfOpenTab: item.maxNumOfOpenTab,
+        noBasicLayout: item.noBasicLayout,
+      },
+    } as SystemMenuApi.SystemMenu;
+  });
 }
 
 async function isMenuNameExists(

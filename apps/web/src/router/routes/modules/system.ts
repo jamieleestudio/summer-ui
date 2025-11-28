@@ -39,6 +39,24 @@ const routes: RouteRecordRaw[] = [
         },
         component: () => import('#/views/system/dept/list.vue'),
       },
+      {
+        path: '/system/user',
+        name: 'SystemUser',
+        meta: {
+          icon: 'mdi:account-circle',
+          title: $t('system.user.title'),
+        },
+        component: () => import('#/views/system/user/list.vue'),
+      },
+      {
+        path: '/system/position',
+        name: 'SystemPosition',
+        meta: {
+          icon: 'mdi:briefcase-outline',
+          title: $t('system.position.title'),
+        },
+        component: () => import('#/views/system/position/list.vue'),
+      },
     ],
   },
 ];

@@ -48,24 +48,25 @@ export function useGridFormSchema(): VbenFormSchema[] {
       fieldName: 'name',
       label: $t('system.role.roleName'),
     },
-    { component: 'Input', fieldName: 'id', label: $t('system.role.id') },
-    {
-      component: 'Select',
-      componentProps: {
-        allowClear: true,
-        options: [
-          { label: $t('common.enabled'), value: 1 },
-          { label: $t('common.disabled'), value: 0 },
-        ],
-      },
-      fieldName: 'status',
-      label: $t('system.role.status'),
-    },
-    {
-      component: 'Input',
-      fieldName: 'description',
-      label: $t('system.role.remark'),
-    }
+    // ,
+    // { component: 'Input', fieldName: 'id', label: $t('system.role.id') },
+    // {
+    //   component: 'Select',
+    //   componentProps: {
+    //     allowClear: true,
+    //     options: [
+    //       { label: $t('common.enabled'), value: 1 },
+    //       { label: $t('common.disabled'), value: 0 },
+    //     ],
+    //   },
+    //   fieldName: 'status',
+    //   label: $t('system.role.status'),
+    // },
+    // {
+    //   component: 'Input',
+    //   fieldName: 'description',
+    //   label: $t('system.role.remark'),
+    // }
     // ,
     // {
     //   component: 'RangePicker',

@@ -26,14 +26,18 @@ async function getRoleList(params: Recordable<any>) {
   const data = await requestClient.get<any>('/roles', { params: query });
 
   let items: Array<SystemRoleApi.SystemRole> = [];
-  if (!items.length) {
+  if (items.length === 0) {
     items = (data?.content ?? []) as Array<SystemRoleApi.SystemRole>;
   }
 
   const total: number =
-    data?.page?.totalElements ?? (Array.isArray(data) ? data.length : items.length);
+    data?.page?.totalElements ??
+    (Array.isArray(data) ? data.length : items.length);
 
-  return { items, total } as { items: Array<SystemRoleApi.SystemRole>; total: number };
+  return { items, total } as {
+    items: Array<SystemRoleApi.SystemRole>;
+    total: number;
+  };
 }
 
 /**
