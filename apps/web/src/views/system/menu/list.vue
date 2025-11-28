@@ -1,31 +1,30 @@
 <script lang="ts" setup>
 import type {
-  OnActionClickParams,
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
-import { IconifyIcon, Plus } from '@vben/icons';
+import { IconifyIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
 
 import { MenuBadge } from '@vben-core/menu-ui';
 
-import { Button, message } from 'ant-design-vue';
+ 
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteMenu, getMenuList, SystemMenuApi } from '#/api/system/menu';
+import { getMenuList } from '#/api/system/menu';
 
 import { useColumns } from './data';
 import Form from './modules/form.vue';
 
-const [FormDrawer, formDrawerApi] = useVbenDrawer({
+const [FormDrawer] = useVbenDrawer({
   connectedComponent: Form,
   destroyOnClose: true,
 });
 
 const [Grid, gridApi] = useVbenVxeGrid({
   gridOptions: {
-    columns: useColumns(onActionClick),
+    columns: useColumns(),
     height: 'auto',
     keepSource: true,
     pagerConfig: {
@@ -35,6 +34,11 @@ const [Grid, gridApi] = useVbenVxeGrid({
       ajax: {
         query: async (_params) => {
           return await getMenuList();
+        },
+        querySuccess: ({ $grid }) => {
+          const { fullData } = $grid.getTableData();
+          const roots = fullData.filter((r: any) => !r.pid || r.pid === 0);
+          $grid.setTreeExpand(roots, true);
         },
       },
     },
@@ -55,70 +59,23 @@ const [Grid, gridApi] = useVbenVxeGrid({
   } as VxeTableGridOptions,
 });
 
-function onActionClick({
-  code,
-  row,
-}: OnActionClickParams<SystemMenuApi.SystemMenu>) {
-  switch (code) {
-    case 'append': {
-      onAppend(row);
-      break;
-    }
-    case 'delete': {
-      onDelete(row);
-      break;
-    }
-    case 'edit': {
-      onEdit(row);
-      break;
-    }
-    default: {
-      break;
-    }
-  }
-}
 
 function onRefresh() {
   gridApi.query();
 }
-function onEdit(row: SystemMenuApi.SystemMenu) {
-  formDrawerApi.setData(row).open();
-}
-function onCreate() {
-  formDrawerApi.setData({}).open();
-}
-function onAppend(row: SystemMenuApi.SystemMenu) {
-  formDrawerApi.setData({ pid: row.id }).open();
-}
-
-function onDelete(row: SystemMenuApi.SystemMenu) {
-  const hideLoading = message.loading({
-    content: $t('ui.actionMessage.deleting', [row.name]),
-    duration: 0,
-    key: 'action_process_msg',
-  });
-  deleteMenu(row.id)
-    .then(() => {
-      message.success({
-        content: $t('ui.actionMessage.deleteSuccess', [row.name]),
-        key: 'action_process_msg',
-      });
-      onRefresh();
-    })
-    .catch(() => {
-      hideLoading();
-    });
-}
+// 展示模式：移除创建/编辑/删除相关操作
 </script>
 <template>
   <Page auto-content-height>
     <FormDrawer @success="onRefresh" />
     <Grid>
       <template #toolbar-tools>
+        <!--
         <Button type="primary" @click="onCreate">
           <Plus class="size-5" />
           {{ $t('ui.actionTitle.create', [$t('system.menu.name')]) }}
         </Button>
+        -->
       </template>
       <template #title="{ row }">
         <div class="flex w-full items-center gap-1">

@@ -1,4 +1,4 @@
-import type { OnActionClickFn, VxeTableGridOptions } from '#/adapter/vxe-table';
+import type { VxeTableGridOptions } from '#/adapter/vxe-table';
 import type { SystemMenuApi } from '#/api/system/menu';
 
 import { $t } from '#/locales';
@@ -21,9 +21,7 @@ export function getMenuTypeOptions() {
   ];
 }
 
-export function useColumns(
-  onActionClick: OnActionClickFn<SystemMenuApi.SystemMenu>,
-): VxeTableGridOptions<SystemMenuApi.SystemMenu>['columns'] {
+export function useColumns(): VxeTableGridOptions<SystemMenuApi.SystemMenu>['columns'] {
   return [
     {
       align: 'left',
@@ -81,29 +79,29 @@ export function useColumns(
       width: 100,
     },
 
-    {
-      align: 'right',
-      cellRender: {
-        attrs: {
-          nameField: 'name',
-          onClick: onActionClick,
-        },
-        name: 'CellOperation',
-        options: [
-          {
-            code: 'append',
-            text: '新增下级',
-          },
-          'edit', // 默认的编辑按钮
-          'delete', // 默认的删除按钮
-        ],
-      },
-      field: 'operation',
-      fixed: 'right',
-      headerAlign: 'center',
-      showOverflow: false,
-      title: $t('system.menu.operation'),
-      width: 200,
-    },
+    // {
+    //   align: 'right',
+    //   cellRender: {
+    //     attrs: {
+    //       nameField: 'name',
+    //       onClick: onActionClick,
+    //     },
+    //     name: 'CellOperation',
+    //     options: [
+    //       {
+    //         code: 'append',
+    //         text: '新增下级',
+    //       },
+    //       'edit',
+    //       'delete',
+    //     ],
+    //   },
+    //   field: 'operation',
+    //   fixed: 'right',
+    //   headerAlign: 'center',
+    //   showOverflow: false,
+    //   title: $t('system.menu.operation'),
+    //   width: 200,
+    // },
   ];
 }
