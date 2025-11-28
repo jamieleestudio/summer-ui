@@ -53,7 +53,7 @@ const [Modal, modalApi] = useVbenModal({
     if (isOpen) {
       const data = modalApi.getData<SystemDeptApi.SystemDept>();
       if (data) {
-        if (data.pid === '0' || data.pid === '' || data.pid == null) {
+        if (data.pid === 0) {
           data.pid = undefined;
         }
         formData.value = data;
@@ -76,3 +76,4 @@ const [Modal, modalApi] = useVbenModal({
     </template>
   </Modal>
 </template>
+

@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import type { DataNode } from 'ant-design-vue/es/tree';
-
 import type { Recordable } from '@vben/types';
-
 import type { SystemRoleApi } from '#/api/system/role';
 
 import { computed, ref } from 'vue';
@@ -70,25 +68,7 @@ async function loadPermissions() {
   loadingPermissions.value = true;
   try {
     const res = await getMenuList();
-    const list = Array.isArray(res) ? res : [];
-    const nodes = list.map((item: Recordable<any>) => ({
-      ...item,
-      id: String(item.id ?? ''),
-      pid: String(item.pid ?? ''),
-      children: [],
-    }));
-    const byId = new Map<string, Recordable<any>>();
-    for (const n of nodes) byId.set(n.id, n);
-    const roots: Recordable<any>[] = [];
-    for (const n of nodes) {
-      const pid = n.pid;
-      if (pid && byId.has(pid)) {
-        byId.get(pid)!.children.push(n);
-      } else {
-        roots.push(n);
-      }
-    }
-    permissions.value = roots as unknown as DataNode[];
+    permissions.value = res as unknown as DataNode[];
   } finally {
     loadingPermissions.value = false;
   }
@@ -137,7 +117,7 @@ function getNodeClass(node: Recordable<any>) {
       </template>
     </Form>
   </Drawer>
-</template>
+  </template>
 <style lang="css" scoped>
 :deep(.ant-tree-title) {
   .tree-actions {
@@ -155,3 +135,4 @@ function getNodeClass(node: Recordable<any>) {
   }
 }
 </style>
+
