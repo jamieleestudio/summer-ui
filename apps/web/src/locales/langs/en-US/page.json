@@ -11,10 +11,5 @@
     "analytics": "Analytics",
     "workspace": "Workspace"
   },
-  "system": {
-    "title": "System",
-    "dept": "Department",
-    "menu": "Menu",
-    "role": "Role"
-  }
+  
 }
