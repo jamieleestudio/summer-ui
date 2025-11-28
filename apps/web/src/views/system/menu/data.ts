@@ -52,6 +52,7 @@ export function useColumns(
       title: $t('system.menu.path'),
       width: 200,
     },
+
     {
       align: 'left',
       field: 'component',
@@ -79,6 +80,7 @@ export function useColumns(
       title: $t('system.menu.status'),
       width: 100,
     },
+
     {
       align: 'right',
       cellRender: {
@@ -92,8 +94,8 @@ export function useColumns(
             code: 'append',
             text: '新增下级',
           },
-          'edit',
-          'delete',
+          'edit', // 默认的编辑按钮
+          'delete', // 默认的删除按钮
         ],
       },
       field: 'operation',
@@ -105,4 +107,3 @@ export function useColumns(
     },
   ];
 }
-

@@ -28,7 +28,9 @@ const [Grid, gridApi] = useVbenVxeGrid({
     columns: useColumns(onActionClick),
     height: 'auto',
     keepSource: true,
-    pagerConfig: { enabled: false },
+    pagerConfig: {
+      enabled: false,
+    },
     proxyConfig: {
       ajax: {
         query: async (_params) => {
@@ -36,13 +38,27 @@ const [Grid, gridApi] = useVbenVxeGrid({
         },
       },
     },
-    rowConfig: { keyField: 'id' },
-    toolbarConfig: { custom: true, export: false, refresh: true, zoom: true },
-    treeConfig: { parentField: 'pid', rowField: 'id', transform: false },
+    rowConfig: {
+      keyField: 'id',
+    },
+    toolbarConfig: {
+      custom: true,
+      export: false,
+      refresh: true,
+      zoom: true,
+    },
+    treeConfig: {
+      parentField: 'pid',
+      rowField: 'id',
+      transform: true,
+    },
   } as VxeTableGridOptions,
 });
 
-function onActionClick({ code, row }: OnActionClickParams<SystemMenuApi.SystemMenu>) {
+function onActionClick({
+  code,
+  row,
+}: OnActionClickParams<SystemMenuApi.SystemMenu>) {
   switch (code) {
     case 'append': {
       onAppend(row);
@@ -54,6 +70,9 @@ function onActionClick({ code, row }: OnActionClickParams<SystemMenuApi.SystemMe
     }
     case 'edit': {
       onEdit(row);
+      break;
+    }
+    default: {
       break;
     }
   }
@@ -141,4 +160,3 @@ function onDelete(row: SystemMenuApi.SystemMenu) {
   }
 }
 </style>
-

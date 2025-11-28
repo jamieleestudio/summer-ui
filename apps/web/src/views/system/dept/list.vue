@@ -22,18 +22,33 @@ const [FormModal, formModalApi] = useVbenModal({
   destroyOnClose: true,
 });
 
+/**
+ * 编辑部门
+ * @param row
+ */
 function onEdit(row: SystemDeptApi.SystemDept) {
   formModalApi.setData(row).open();
 }
 
+/**
+ * 添加下级部门
+ * @param row
+ */
 function onAppend(row: SystemDeptApi.SystemDept) {
   formModalApi.setData({ pid: row.id }).open();
 }
 
+/**
+ * 创建新部门
+ */
 function onCreate() {
   formModalApi.setData(null).open();
 }
 
+/**
+ * 删除部门
+ * @param row
+ */
 function onDelete(row: SystemDeptApi.SystemDept) {
   const hideLoading = message.loading({
     content: $t('ui.actionMessage.deleting', [row.name]),
@@ -53,7 +68,31 @@ function onDelete(row: SystemDeptApi.SystemDept) {
     });
 }
 
+/**
+ * 表格操作按钮的回调函数
+ */
+function onActionClick({
+  code,
+  row,
+}: OnActionClickParams<SystemDeptApi.SystemDept>) {
+  switch (code) {
+    case 'append': {
+      onAppend(row);
+      break;
+    }
+    case 'delete': {
+      onDelete(row);
+      break;
+    }
+    case 'edit': {
+      onEdit(row);
+      break;
+    }
+  }
+}
+
 const [Grid, gridApi] = useVbenVxeGrid({
+  gridEvents: {},
   gridOptions: {
     columns: useColumns(onActionClick),
     height: 'auto',
@@ -68,9 +107,6 @@ const [Grid, gridApi] = useVbenVxeGrid({
         },
       },
     },
-    rowConfig: {
-      keyField: 'id',
-    },
     toolbarConfig: {
       custom: true,
       export: false,
@@ -80,40 +116,22 @@ const [Grid, gridApi] = useVbenVxeGrid({
     treeConfig: {
       parentField: 'pid',
       rowField: 'id',
-      transform: false,
+      transform: true,
     },
   } as VxeTableGridOptions,
 });
 
-function onActionClick({ code, row }: OnActionClickParams<SystemDeptApi.SystemDept>) {
-  switch (code) {
-    case 'append': {
-      onAppend(row);
-      break;
-    }
-    case 'delete': {
-      onDelete(row);
-      break;
-    }
-    case 'edit': {
-      onEdit(row);
-      break;
-    }
-    default: {
-      break;
-    }
-  }
-}
-
+/**
+ * 刷新表格
+ */
 function refreshGrid() {
   gridApi.query();
 }
 </script>
-
 <template>
   <Page auto-content-height>
     <FormModal @success="refreshGrid" />
-    <Grid>
+    <Grid table-title="部门列表">
       <template #toolbar-tools>
         <Button type="primary" @click="onCreate">
           <Plus class="size-5" />
@@ -123,4 +141,3 @@ function refreshGrid() {
     </Grid>
   </Page>
 </template>
-

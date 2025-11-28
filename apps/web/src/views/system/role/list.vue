@@ -1,7 +1,11 @@
 <script lang="ts" setup>
 import type { Recordable } from '@vben/types';
-import type { OnActionClickParams, VxeTableGridOptions } from '#/adapter/vxe-table';
-import type { SystemRoleApi } from '#/api/system/role';
+
+import type {
+  OnActionClickParams,
+  VxeTableGridOptions,
+} from '#/adapter/vxe-table';
+import type { SystemRoleApi } from '#/api';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
@@ -9,7 +13,7 @@ import { Plus } from '@vben/icons';
 import { Button, message, Modal } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteRole, getRoleList, updateRole } from '#/api/system/role';
+import { deleteRole, getRoleList, updateRole } from '#/api';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
@@ -34,15 +38,24 @@ const [Grid, gridApi] = useVbenVxeGrid({
       ajax: {
         query: async ({ page }, formValues) => {
           return await getRoleList({
-            page: page.currentPage,
+            page: page.currentPage - 1,
             pageSize: page.pageSize,
             ...formValues,
           });
         },
       },
     },
-    rowConfig: { keyField: 'id' },
-    toolbarConfig: { custom: true, export: false, refresh: true, search: true, zoom: true },
+    rowConfig: {
+      keyField: 'id',
+    },
+
+    toolbarConfig: {
+      custom: true,
+      export: false,
+      refresh: true,
+      search: true,
+      zoom: true,
+    },
   } as VxeTableGridOptions<SystemRoleApi.SystemRole>,
 });
 
@@ -59,19 +72,40 @@ function onActionClick(e: OnActionClickParams<SystemRoleApi.SystemRole>) {
   }
 }
 
+/**
+ * 将Antd的Modal.confirm封装为promise，方便在异步函数中调用。
+ * @param content 提示内容
+ * @param title 提示标题
+ */
 function confirm(content: string, title: string) {
   return new Promise((reslove, reject) => {
     Modal.confirm({
       content,
-      onCancel() { reject(new Error('已取消')); },
-      onOk() { reslove(true); },
+      onCancel() {
+        reject(new Error('已取消'));
+      },
+      onOk() {
+        reslove(true);
+      },
       title,
     });
   });
 }
 
-async function onStatusChange(newStatus: number, row: SystemRoleApi.SystemRole) {
-  const status: Recordable<string> = { 0: '禁用', 1: '启用' };
+/**
+ * 状态开关即将改变
+ * @param newStatus 期望改变的状态值
+ * @param row 行数据
+ * @returns 返回false则中止改变，返回其他值（undefined、true）则允许改变
+ */
+async function onStatusChange(
+  newStatus: number,
+  row: SystemRoleApi.SystemRole,
+) {
+  const status: Recordable<string> = {
+    0: '禁用',
+    1: '启用',
+  };
   try {
     await confirm(
       `你要将${row.name}的状态切换为 【${status[newStatus.toString()]}】 吗？`,
@@ -102,12 +136,18 @@ function onDelete(row: SystemRoleApi.SystemRole) {
       });
       onRefresh();
     })
-    .catch(() => { hideLoading(); });
+    .catch(() => {
+      hideLoading();
+    });
 }
 
-function onRefresh() { gridApi.query(); }
+function onRefresh() {
+  gridApi.query();
+}
 
-function onCreate() { formDrawerApi.setData({}).open(); }
+function onCreate() {
+  formDrawerApi.setData({}).open();
+}
 </script>
 <template>
   <Page auto-content-height>
@@ -122,4 +162,3 @@ function onCreate() { formDrawerApi.setData({}).open(); }
     </Grid>
   </Page>
 </template>
-
