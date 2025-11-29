@@ -14,14 +14,14 @@ import { Spin } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
 import { getMenuList } from '#/api/system/menu';
-import { createRole, updateRole } from '#/api/system/role';
+import { createRole, getRoleDetail, updateRole } from '#/api/system/role';
 import { $t } from '#/locales';
 
 import { useFormSchema } from '../data';
 
 const emits = defineEmits(['success']);
 
-const formData = ref<SystemRoleApi.SystemRole>();
+const formData = ref<SystemRoleApi.RoleDetailResponse>();
 
 const [Form, formApi] = useVbenForm({
   schema: useFormSchema(),
@@ -37,8 +37,21 @@ const [Drawer, drawerApi] = useVbenDrawer({
     const { valid } = await formApi.validate();
     if (!valid) return;
     const values = await formApi.getValues();
+
+    // 确保数据符合API要求的格式
+    const apiData:
+      | SystemRoleApi.RoleCreateRequest
+      | SystemRoleApi.RoleUpdateRequest = {
+      name: values.name,
+      description: values.description || '',
+      permissionScope: values.permissionScope || 0,
+      sort: values.sort || 0,
+      permissions: values.permissions || [],
+      enabled: values.enabled === true,
+    };
+
     drawerApi.lock();
-    (id.value ? updateRole(id.value, values) : createRole(values))
+    (id.value ? updateRole(id.value, apiData) : createRole(apiData))
       .then(() => {
         emits('success');
         drawerApi.close();
@@ -52,15 +65,37 @@ const [Drawer, drawerApi] = useVbenDrawer({
       const data = drawerApi.getData<SystemRoleApi.SystemRole>();
       formApi.resetForm();
       if (data) {
-        formData.value = data;
-        id.value = data.id;
-        formApi.setValues(data);
+        // 直接从drawerApi获取的数据类型可能不完整，先使用getRoleDetail获取完整数据
+        id.value = typeof data === 'string' ? data : data.id;
+        // 编辑模式下，调用角色详情接口获取权限信息
+        drawerApi.lock();
+        Promise.all([
+          getRoleDetail(typeof data === 'string' ? data : data.id),
+          permissions.value.length === 0
+            ? loadPermissions()
+            : Promise.resolve(),
+        ])
+          .then(([roleDetail]) => {
+            formData.value = roleDetail;
+            // 将角色详情数据设置到表单中
+            const formValues = {
+              name: roleDetail.name,
+              description: roleDetail.description,
+              permissionScope: roleDetail.permissionScope,
+              sort: roleDetail.sort,
+              permissions: roleDetail.permissions || [],
+              enabled: roleDetail.enabled,
+            };
+            formApi.setValues(formValues);
+          })
+          .finally(() => {
+            drawerApi.unlock();
+          });
       } else {
         id.value = undefined;
-      }
-
-      if (permissions.value.length === 0) {
-        loadPermissions();
+        if (permissions.value.length === 0) {
+          loadPermissions();
+        }
       }
     }
   },

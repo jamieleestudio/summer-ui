@@ -13,7 +13,7 @@ import { Plus } from '@vben/icons';
 import { Button, message, Modal } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteRole, getRoleList, updateRole } from '#/api';
+import { deleteRole, getRoleList, updateRoleEnabled } from '#/api';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
@@ -31,7 +31,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
     submitOnChange: true,
   },
   gridOptions: {
-    columns: useColumns(onActionClick, onStatusChange),
+    columns: useColumns(onActionClick, onEnabledChange),
     height: 'auto',
     keepSource: true,
     proxyConfig: {
@@ -94,24 +94,25 @@ function confirm(content: string, title: string) {
 
 /**
  * 状态开关即将改变
- * @param newStatus 期望改变的状态值
+ * @param newEnabled 期望改变的状态值
  * @param row 行数据
  * @returns 返回false则中止改变，返回其他值（undefined、true）则允许改变
  */
-async function onStatusChange(
-  newStatus: number,
+async function onEnabledChange(
+  newEnabled: boolean,
   row: SystemRoleApi.SystemRole,
 ) {
   const status: Recordable<string> = {
-    0: '禁用',
-    1: '启用',
+    false: '禁用',
+    true: '启用',
   };
   try {
+    const label = newEnabled ? status.true : status.false;
     await confirm(
-      `你要将${row.name}的状态切换为 【${status[newStatus.toString()]}】 吗？`,
+      `你要将${row.name}的状态切换为 【${label}】 吗？`,
       `切换状态`,
     );
-    await updateRole(row.id, { status: newStatus });
+    await updateRoleEnabled(row.id, newEnabled);
     return true;
   } catch {
     return false;

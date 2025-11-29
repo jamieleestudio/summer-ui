@@ -17,13 +17,13 @@ export function useFormSchema(): VbenFormSchema[] {
       componentProps: {
         buttonStyle: 'solid',
         options: [
-          { label: $t('common.enabled'), value: 1 },
-          { label: $t('common.disabled'), value: 0 },
+          { label: $t('common.enabled'), value: true },
+          { label: $t('common.disabled'), value: false },
         ],
         optionType: 'button',
       },
-      defaultValue: 1,
-      fieldName: 'status',
+      defaultValue: true,
+      fieldName: 'enabled',
       label: $t('system.role.status'),
     },
     {
@@ -78,7 +78,10 @@ export function useGridFormSchema(): VbenFormSchema[] {
 
 export function useColumns<T = SystemRoleApi.SystemRole>(
   onActionClick: OnActionClickFn<T>,
-  onStatusChange?: (newStatus: any, row: T) => PromiseLike<boolean | undefined>,
+  onEnabledChange?: (
+    newEnabled: boolean,
+    row: T,
+  ) => PromiseLike<boolean | undefined>,
 ): VxeTableGridOptions['columns'] {
   return [
     {
@@ -93,10 +96,18 @@ export function useColumns<T = SystemRoleApi.SystemRole>(
     },
     {
       cellRender: {
-        attrs: { beforeChange: onStatusChange },
-        name: onStatusChange ? 'CellSwitch' : 'CellTag',
+        attrs: { beforeChange: onEnabledChange },
+        name: onEnabledChange ? 'CellSwitch' : 'CellTag',
+        options: [
+          { color: 'success', label: $t('common.enabled'), value: true },
+          { color: 'error', label: $t('common.disabled'), value: false },
+        ],
+        props: {
+          checkedValue: true,
+          unCheckedValue: false,
+        },
       },
-      field: 'status',
+      field: 'enabled',
       title: $t('system.role.status'),
       width: 100,
     },
