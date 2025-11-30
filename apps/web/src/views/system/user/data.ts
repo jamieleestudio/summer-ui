@@ -147,7 +147,7 @@ export function useColumns(
       title: $t('system.user.realName'),
       width: 180,
     },
-    { field: 'email', title: $t('system.user.email'), width: 220 },
+    { field: 'email', title: $t('system.user.email') },
     { field: 'phone', title: $t('system.user.phone'), width: 180 },
     {
       cellRender: {

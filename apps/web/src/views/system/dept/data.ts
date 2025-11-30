@@ -84,7 +84,7 @@ export function useColumns(
       fixed: 'left',
       title: $t('system.dept.deptName'),
       treeNode: true,
-      width: 150,
+      width: 280,
     },
     {
       cellRender: { name: 'CellTag' },
@@ -113,11 +113,16 @@ export function useColumns(
         options: [
           {
             code: 'append',
+            icon: 'mdi:plus',
             text: '新增下级',
           },
-          'edit', // 默认的编辑按钮
           {
-            code: 'delete', // 默认的删除按钮
+            code: 'edit',
+            icon: 'mdi:pencil-outline',
+          },
+          {
+            code: 'delete',
+            icon: 'mdi:delete-outline',
             disabled: (row: SystemDeptApi.SystemDept) => {
               return !!(row.children && row.children.length > 0);
             },
@@ -129,7 +134,7 @@ export function useColumns(
       headerAlign: 'center',
       showOverflow: false,
       title: $t('system.dept.operation'),
-      width: 200,
+      width: 280,
     },
   ];
 }

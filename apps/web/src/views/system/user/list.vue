@@ -114,7 +114,7 @@ async function onEnableChange(
   <Page auto-content-height>
     <FormDrawer @success="onRefresh" />
     <Grid>
-      <template #toolbar-tools>
+      <template #toolbar-actions>
         <Button type="primary" @click="onCreate">
           <Plus class="size-5" />
           {{ $t('ui.actionTitle.create', [$t('system.user.name')]) }}

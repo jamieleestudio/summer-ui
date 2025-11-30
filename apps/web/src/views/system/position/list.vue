@@ -1,5 +1,8 @@
 <script lang="ts" setup>
-import type { OnActionClickParams, VxeTableGridOptions } from '#/adapter/vxe-table';
+import type {
+  OnActionClickParams,
+  VxeTableGridOptions,
+} from '#/adapter/vxe-table';
 import type { SystemPositionApi } from '#/api/system/position';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
@@ -14,7 +17,10 @@ import { $t } from '#/locales';
 import { useColumns, useGridFormSchema } from './data';
 import Form from './modules/form.vue';
 
-const [FormDrawer, formDrawerApi] = useVbenDrawer({ connectedComponent: Form, destroyOnClose: true });
+const [FormDrawer, formDrawerApi] = useVbenDrawer({
+  connectedComponent: Form,
+  destroyOnClose: true,
+});
 
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: { schema: useGridFormSchema(), submitOnChange: true },
@@ -25,7 +31,11 @@ const [Grid, gridApi] = useVbenVxeGrid({
     proxyConfig: {
       ajax: {
         query: async ({ page }, formValues) => {
-          return await getPositionList({ page: page.currentPage - 1, pageSize: page.pageSize, ...formValues });
+          return await getPositionList({
+            page: page.currentPage - 1,
+            pageSize: page.pageSize,
+            ...formValues,
+          });
         },
       },
     },
@@ -34,16 +44,22 @@ const [Grid, gridApi] = useVbenVxeGrid({
   } as VxeTableGridOptions,
 });
 
-function onActionClick({ code, row }: OnActionClickParams<SystemPositionApi.SystemPosition>) {
+function onActionClick({
+  code,
+  row,
+}: OnActionClickParams<SystemPositionApi.SystemPosition>) {
   switch (code) {
-    case 'delete':
+    case 'delete': {
       onDelete(row);
       break;
-    case 'edit':
+    }
+    case 'edit': {
       onEdit(row);
       break;
-    default:
+    }
+    default: {
       break;
+    }
   }
 }
 
@@ -58,10 +74,17 @@ function onCreate() {
 }
 
 function onDelete(row: SystemPositionApi.SystemPosition) {
-  const hideLoading = message.loading({ content: $t('ui.actionMessage.deleting', [row.name]), duration: 0, key: 'action_process_msg' });
+  const hideLoading = message.loading({
+    content: $t('ui.actionMessage.deleting', [row.name]),
+    duration: 0,
+    key: 'action_process_msg',
+  });
   deletePosition(row.id)
     .then(() => {
-      message.success({ content: $t('ui.actionMessage.deleteSuccess', [row.name]), key: 'action_process_msg' });
+      message.success({
+        content: $t('ui.actionMessage.deleteSuccess', [row.name]),
+        key: 'action_process_msg',
+      });
       onRefresh();
     })
     .catch(() => hideLoading());
@@ -71,7 +94,7 @@ function onDelete(row: SystemPositionApi.SystemPosition) {
   <Page auto-content-height>
     <FormDrawer @success="onRefresh" />
     <Grid>
-      <template #toolbar-tools>
+      <template #toolbar-actions>
         <Button type="primary" @click="onCreate">
           <Plus class="size-5" />
           {{ $t('ui.actionTitle.create', [$t('system.position.name')]) }}

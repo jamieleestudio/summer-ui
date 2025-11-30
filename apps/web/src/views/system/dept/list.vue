@@ -132,8 +132,8 @@ function refreshGrid() {
 <template>
   <Page auto-content-height>
     <FormDrawer @success="refreshGrid" />
-    <Grid table-title="部门列表">
-      <template #toolbar-tools>
+    <Grid>
+      <template #toolbar-actions>
         <Button type="primary" @click="onCreate">
           <Plus class="size-5" />
           {{ $t('ui.actionTitle.create', [$t('system.dept.name')]) }}

@@ -1,15 +1,11 @@
 <script lang="ts" setup>
-import type {
-  VxeTableGridOptions,
-} from '#/adapter/vxe-table';
+import type { VxeTableGridOptions } from '#/adapter/vxe-table';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
 
 import { MenuBadge } from '@vben-core/menu-ui';
-
- 
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { getMenuList } from '#/api/system/menu';
@@ -59,7 +55,6 @@ const [Grid, gridApi] = useVbenVxeGrid({
   } as VxeTableGridOptions,
 });
 
-
 function onRefresh() {
   gridApi.query();
 }
@@ -69,7 +64,7 @@ function onRefresh() {
   <Page auto-content-height>
     <FormDrawer @success="onRefresh" />
     <Grid>
-      <template #toolbar-tools>
+      <template #toolbar-actions>
         <!--
         <Button type="primary" @click="onCreate">
           <Plus class="size-5" />

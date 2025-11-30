@@ -84,7 +84,8 @@
   "position": {
     "title": "岗位管理",
     "list": "岗位列表",
-    "name": "岗位名称",
+    "name": "岗位",
+    "positioinName":"岗位名称",
     "code": "岗位编码",
     "status": "状态",
     "remark": "备注",

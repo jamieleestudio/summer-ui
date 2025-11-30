@@ -9,7 +9,7 @@ export function useFormSchema(): VbenFormSchema[] {
     {
       component: 'Input',
       fieldName: 'name',
-      label: $t('system.position.name'),
+      label: $t('system.position.positioinName'),
       rules: 'required',
     },
     {
@@ -44,7 +44,7 @@ export function useGridFormSchema(): VbenFormSchema[] {
     {
       component: 'Input',
       fieldName: 'name',
-      label: $t('system.position.name'),
+      label: $t('system.position.positioinName'),
     },
     {
       component: 'Input',
@@ -70,7 +70,7 @@ export function useColumns(
   onActionClick: OnActionClickFn<SystemPositionApi.SystemPosition>,
 ): VxeTableGridOptions<SystemPositionApi.SystemPosition>['columns'] {
   return [
-    { field: 'name', title: $t('system.position.name'), width: 180 },
+    { field: 'name', title: $t('system.position.positioinName'), width: 180 },
     { field: 'code', title: $t('system.position.code'), width: 160 },
     {
       cellRender: {
@@ -84,7 +84,7 @@ export function useColumns(
       title: $t('system.position.status'),
       width: 100,
     },
-    { field: 'remark', title: $t('system.position.remark'), width: 220 },
+    { field: 'remark', title: $t('system.position.remark') },
     {
       field: 'createTime',
       title: $t('system.position.createTime'),

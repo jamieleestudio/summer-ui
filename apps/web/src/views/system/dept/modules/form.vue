@@ -5,8 +5,6 @@ import { computed, ref } from 'vue';
 
 import { useVbenDrawer } from '@vben/common-ui';
 
-import { Button } from 'ant-design-vue';
-
 import { useVbenForm } from '#/adapter/form';
 import { createDept, updateDept } from '#/api/system/dept';
 import { $t } from '#/locales';
@@ -26,11 +24,6 @@ const [Form, formApi] = useVbenForm({
   schema: useSchema(),
   showDefaultActions: false,
 });
-
-function resetForm() {
-  formApi.resetForm();
-  formApi.setValues(formData.value || {});
-}
 
 const [Drawer, drawerApi] = useVbenDrawer({
   async onConfirm() {
@@ -72,12 +65,5 @@ const [Drawer, drawerApi] = useVbenDrawer({
 <template>
   <Drawer :title="getTitle">
     <Form class="mx-4" />
-    <template #prepend-footer>
-      <div class="flex-auto">
-        <Button type="primary" danger @click="resetForm">
-          {{ $t('common.reset') }}
-        </Button>
-      </div>
-    </template>
   </Drawer>
 </template>
