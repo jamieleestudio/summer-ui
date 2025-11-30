@@ -6,40 +6,61 @@ import { $t } from '#/locales';
 
 export function useFormSchema(): VbenFormSchema[] {
   return [
-    { component: 'Input', fieldName: 'name', label: $t('system.position.name'), rules: 'required' },
-    { component: 'Input', fieldName: 'code', label: $t('system.position.code') },
+    {
+      component: 'Input',
+      fieldName: 'name',
+      label: $t('system.position.name'),
+      rules: 'required',
+    },
+    {
+      component: 'Input',
+      fieldName: 'code',
+      label: $t('system.position.code'),
+    },
     {
       component: 'RadioGroup',
       componentProps: {
         buttonStyle: 'solid',
         options: [
-          { label: $t('common.enabled'), value: 1 },
-          { label: $t('common.disabled'), value: 0 },
+          { label: $t('common.enabled'), value: true },
+          { label: $t('common.disabled'), value: false },
         ],
         optionType: 'button',
       },
-      defaultValue: 1,
-      fieldName: 'status',
+      defaultValue: true,
+      fieldName: 'enabled',
       label: $t('system.position.status'),
     },
-    { component: 'Textarea', fieldName: 'remark', label: $t('system.position.remark') },
+    {
+      component: 'Textarea',
+      fieldName: 'remark',
+      label: $t('system.position.remark'),
+    },
   ];
 }
 
 export function useGridFormSchema(): VbenFormSchema[] {
   return [
-    { component: 'Input', fieldName: 'name', label: $t('system.position.name') },
-    { component: 'Input', fieldName: 'code', label: $t('system.position.code') },
+    {
+      component: 'Input',
+      fieldName: 'name',
+      label: $t('system.position.name'),
+    },
+    {
+      component: 'Input',
+      fieldName: 'code',
+      label: $t('system.position.code'),
+    },
     {
       component: 'Select',
       componentProps: {
         allowClear: true,
         options: [
-          { label: $t('common.enabled'), value: 1 },
-          { label: $t('common.disabled'), value: 0 },
+          { label: $t('common.enabled'), value: true },
+          { label: $t('common.disabled'), value: false },
         ],
       },
-      fieldName: 'status',
+      fieldName: 'enabled',
       label: $t('system.position.status'),
     },
   ];
@@ -51,9 +72,24 @@ export function useColumns(
   return [
     { field: 'name', title: $t('system.position.name'), width: 180 },
     { field: 'code', title: $t('system.position.code'), width: 160 },
-    { cellRender: { name: 'CellTag' }, field: 'status', title: $t('system.position.status'), width: 100 },
+    {
+      cellRender: {
+        name: 'CellTag',
+        options: [
+          { color: 'success', label: $t('common.enabled'), value: true },
+          { color: 'error', label: $t('common.disabled'), value: false },
+        ],
+      },
+      field: 'enabled',
+      title: $t('system.position.status'),
+      width: 100,
+    },
     { field: 'remark', title: $t('system.position.remark'), width: 220 },
-    { field: 'createTime', title: $t('system.position.createTime'), width: 180 },
+    {
+      field: 'createTime',
+      title: $t('system.position.createTime'),
+      width: 180,
+    },
     {
       align: 'right',
       cellRender: {

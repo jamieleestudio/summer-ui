@@ -3,7 +3,7 @@ import type { SystemDeptApi } from '#/api/system/dept';
 
 import { computed, ref } from 'vue';
 
-import { useVbenModal } from '@vben/common-ui';
+import { useVbenDrawer } from '@vben/common-ui';
 
 import { Button } from 'ant-design-vue';
 
@@ -32,28 +32,33 @@ function resetForm() {
   formApi.setValues(formData.value || {});
 }
 
-const [Modal, modalApi] = useVbenModal({
+const [Drawer, drawerApi] = useVbenDrawer({
   async onConfirm() {
     const { valid } = await formApi.validate();
     if (valid) {
-      modalApi.lock();
+      drawerApi.lock();
       const data = await formApi.getValues();
       try {
         await (formData.value?.id
           ? updateDept(formData.value.id, data)
           : createDept(data));
-        modalApi.close();
+        drawerApi.close();
         emit('success');
       } finally {
-        modalApi.lock(false);
+        drawerApi.lock(false);
       }
     }
   },
   onOpenChange(isOpen) {
     if (isOpen) {
-      const data = modalApi.getData<SystemDeptApi.SystemDept>();
+      const data = drawerApi.getData<SystemDeptApi.SystemDept>();
       if (data) {
-        if (data.pid === '0' || data.pid === '' || data.pid == null) {
+        if (
+          data.pid === '0' ||
+          data.pid === '' ||
+          data.pid === null ||
+          data.pid === undefined
+        ) {
           data.pid = undefined;
         }
         formData.value = data;
@@ -65,7 +70,7 @@ const [Modal, modalApi] = useVbenModal({
 </script>
 
 <template>
-  <Modal :title="getTitle">
+  <Drawer :title="getTitle">
     <Form class="mx-4" />
     <template #prepend-footer>
       <div class="flex-auto">
@@ -74,5 +79,5 @@ const [Modal, modalApi] = useVbenModal({
         </Button>
       </div>
     </template>
-  </Modal>
+  </Drawer>
 </template>

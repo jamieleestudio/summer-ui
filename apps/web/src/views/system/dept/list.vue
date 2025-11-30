@@ -5,7 +5,7 @@ import type {
 } from '#/adapter/vxe-table';
 import type { SystemDeptApi } from '#/api/system/dept';
 
-import { Page, useVbenModal } from '@vben/common-ui';
+import { Page, useVbenDrawer } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 
 import { Button, message } from 'ant-design-vue';
@@ -17,7 +17,7 @@ import { $t } from '#/locales';
 import { useColumns } from './data';
 import Form from './modules/form.vue';
 
-const [FormModal, formModalApi] = useVbenModal({
+const [FormDrawer, formDrawerApi] = useVbenDrawer({
   connectedComponent: Form,
   destroyOnClose: true,
 });
@@ -27,7 +27,7 @@ const [FormModal, formModalApi] = useVbenModal({
  * @param row
  */
 function onEdit(row: SystemDeptApi.SystemDept) {
-  formModalApi.setData(row).open();
+  formDrawerApi.setData(row).open();
 }
 
 /**
@@ -35,14 +35,14 @@ function onEdit(row: SystemDeptApi.SystemDept) {
  * @param row
  */
 function onAppend(row: SystemDeptApi.SystemDept) {
-  formModalApi.setData({ pid: row.id }).open();
+  formDrawerApi.setData({ pid: row.id }).open();
 }
 
 /**
  * 创建新部门
  */
 function onCreate() {
-  formModalApi.setData(null).open();
+  formDrawerApi.setData(null).open();
 }
 
 /**
@@ -114,6 +114,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
       zoom: true,
     },
     treeConfig: {
+      expandAll: true,
       parentField: 'pid',
       rowField: 'id',
       transform: true,
@@ -130,7 +131,7 @@ function refreshGrid() {
 </script>
 <template>
   <Page auto-content-height>
-    <FormModal @success="refreshGrid" />
+    <FormDrawer @success="refreshGrid" />
     <Grid table-title="部门列表">
       <template #toolbar-tools>
         <Button type="primary" @click="onCreate">

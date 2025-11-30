@@ -19,27 +19,14 @@ export namespace SystemDeptApi {
 async function getDeptList() {
   const data = await requestClient.get<any[]>('/departments');
   const list = Array.isArray(data) ? data : [];
-  const nodes = list.map((item: any) => ({
+  return list.map((item: any) => ({
     id: String(item.id ?? ''),
-    pid: String(item.pid ?? item.parentId ?? ''),
+    pid: item.pid ?? item.parentId ?? null, // Return null if no parent
     name: item.name ?? item.deptName ?? '',
     status: item.status ?? 1,
     remark: item.remark ?? item.description ?? '',
     createTime: item.createTime ?? item.createdAt ?? '',
-    children: [],
   }));
-  const byId = new Map<string, SystemDeptApi.SystemDept>();
-  for (const n of nodes) byId.set(n.id, n);
-  const roots: SystemDeptApi.SystemDept[] = [];
-  for (const n of nodes) {
-    const pid = n.pid as string;
-    if (pid && byId.has(pid)) {
-      (byId.get(pid)!.children ||= []).push(n);
-    } else {
-      roots.push(n);
-    }
-  }
-  return roots;
 }
 
 /**

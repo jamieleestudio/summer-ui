@@ -14,7 +14,10 @@ import { useFormSchema } from '../data';
 const emit = defineEmits(['success']);
 const formData = ref<SystemUserApi.SystemUser>();
 
-const [Form, formApi] = useVbenForm({ schema: useFormSchema(), showDefaultActions: false });
+const [Form, formApi] = useVbenForm({
+  schema: useFormSchema(),
+  showDefaultActions: false,
+});
 
 const [Drawer, drawerApi] = useVbenDrawer({
   async onConfirm() {
@@ -22,7 +25,10 @@ const [Drawer, drawerApi] = useVbenDrawer({
     if (!valid) return;
     const values = await formApi.getValues();
     drawerApi.lock();
-    (formData.value?.id ? updateUser(formData.value.id, values) : createUser(values))
+    (formData.value?.id
+      ? updateUser(formData.value.id, values)
+      : createUser(values)
+    )
       .then(() => {
         emit('success');
         drawerApi.close();
@@ -33,11 +39,41 @@ const [Drawer, drawerApi] = useVbenDrawer({
     if (isOpen) {
       const data = drawerApi.getData<SystemUserApi.SystemUser>();
       formApi.resetForm();
-      if (data) {
-        formData.value = data;
+      if (data && data.id) {
+        const values = { ...data };
+        // Ensure roleIds and positionIds are populated if the backend returns objects
+        if (!values.roleIds && Array.isArray(values.roles)) {
+          values.roleIds = values.roles.map((r: any) => r.id);
+        }
+        if (!values.positionIds && Array.isArray(values.positions)) {
+          values.positionIds = values.positions.map((p: any) => p.id);
+        }
+        if (!values.departmentId && values.department) {
+          values.departmentId = (values.department as any).id;
+        }
+        
+        formData.value = values;
         formApi.setValues(formData.value);
+        formApi.updateSchema([
+          {
+            fieldName: 'password',
+            componentProps: {
+              placeholder: $t('ui.form.rules.optional'),
+            },
+            rules: null, // Optional on update
+          },
+        ]);
       } else {
         formData.value = undefined;
+        formApi.updateSchema([
+          {
+            fieldName: 'password',
+            componentProps: {
+              placeholder: $t('ui.form.rules.required'),
+            },
+            rules: 'required', // Required on create
+          },
+        ]);
       }
     }
   },

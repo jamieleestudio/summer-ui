@@ -8,7 +8,7 @@ export namespace SystemPositionApi {
     id: string;
     name: string;
     code?: string;
-    status: 0 | 1;
+    enabled: boolean;
     remark?: string;
     createTime?: string;
   }
@@ -23,22 +23,43 @@ async function getPositionList(params: Recordable<any>) {
   };
   const data = await requestClient.get<any>('/positions', { params: query });
 
-  let items: Array<SystemPositionApi.SystemPosition> = [];
-  if (!items.length) {
-    items = (data?.content ?? data?.items ?? data ?? []) as Array<SystemPositionApi.SystemPosition>;
+  let rawItems: any[] = [];
+  if (Array.isArray(data?.content)) {
+    rawItems = data.content;
+  } else if (Array.isArray(data?.items)) {
+    rawItems = data.items;
+  } else if (Array.isArray(data)) {
+    rawItems = data;
   }
 
-  const total: number =
-    data?.page?.totalElements ?? data?.total ?? (Array.isArray(data) ? data.length : items.length);
+  const items: Array<SystemPositionApi.SystemPosition> = rawItems.map((item) => {
+    return {
+      ...item,
+      enabled: Boolean(item?.enabled ?? item?.status === 1),
+    } as SystemPositionApi.SystemPosition;
+  });
 
-  return { items, total } as { items: Array<SystemPositionApi.SystemPosition>; total: number };
+  const total: number =
+    data?.page?.totalElements ??
+    data?.total ??
+    (Array.isArray(data) ? data.length : items.length);
+
+  return { items, total } as {
+    items: Array<SystemPositionApi.SystemPosition>;
+    total: number;
+  };
 }
 
-async function createPosition(data: Omit<SystemPositionApi.SystemPosition, 'id'>) {
+async function createPosition(
+  data: Omit<SystemPositionApi.SystemPosition, 'id'>,
+) {
   return requestClient.post('/positions', data);
 }
 
-async function updatePosition(id: string, data: Omit<SystemPositionApi.SystemPosition, 'id'>) {
+async function updatePosition(
+  id: string,
+  data: Omit<SystemPositionApi.SystemPosition, 'id'>,
+) {
   return requestClient.put(`/positions/${id}`, data);
 }
 
