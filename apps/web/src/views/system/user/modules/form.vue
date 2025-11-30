@@ -51,7 +51,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
         if (!values.departmentId && values.department) {
           values.departmentId = (values.department as any).id;
         }
-        
+
         formData.value = values;
         formApi.setValues(formData.value);
         formApi.updateSchema([

@@ -32,12 +32,14 @@ async function getPositionList(params: Recordable<any>) {
     rawItems = data;
   }
 
-  const items: Array<SystemPositionApi.SystemPosition> = rawItems.map((item) => {
-    return {
-      ...item,
-      enabled: Boolean(item?.enabled ?? item?.status === 1),
-    } as SystemPositionApi.SystemPosition;
-  });
+  const items: Array<SystemPositionApi.SystemPosition> = rawItems.map(
+    (item) => {
+      return {
+        ...item,
+        enabled: Boolean(item?.enabled ?? item?.status === 1),
+      } as SystemPositionApi.SystemPosition;
+    },
+  );
 
   const total: number =
     data?.page?.totalElements ??

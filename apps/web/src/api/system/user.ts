@@ -99,10 +99,7 @@ async function createUser(data: SystemUserApi.UserCreateRequest) {
   return requestClient.post('/users', data);
 }
 
-async function updateUser(
-  id: string,
-  data: SystemUserApi.UserUpdateRequest,
-) {
+async function updateUser(id: string, data: SystemUserApi.UserUpdateRequest) {
   return requestClient.put(`/users/${id}`, data);
 }
 
@@ -110,9 +107,4 @@ async function deleteUser(id: string) {
   return requestClient.delete(`/users/${id}`);
 }
 
-export {
-  createUser,
-  deleteUser,
-  getUserList,
-  updateUser,
-};
+export { createUser, deleteUser, getUserList, updateUser };

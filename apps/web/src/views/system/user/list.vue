@@ -49,14 +49,17 @@ function onActionClick({
   row,
 }: OnActionClickParams<SystemUserApi.SystemUser>) {
   switch (code) {
-    case 'delete':
+    case 'delete': {
       onDelete(row);
       break;
-    case 'edit':
+    }
+    case 'edit': {
       onEdit(row);
       break;
-    default:
+    }
+    default: {
       break;
+    }
   }
 }
 
