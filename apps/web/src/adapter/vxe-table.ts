@@ -25,7 +25,7 @@ setupVbenVxeTable({
     vxeUI.setConfig({
       grid: {
         align: 'center',
-        border: true,
+        border: 'inner',
         columnConfig: {
           resizable: true,
         },

@@ -23,7 +23,10 @@ const [FormDrawer, formDrawerApi] = useVbenDrawer({
 });
 
 const [Grid, gridApi] = useVbenVxeGrid({
-  formOptions: { schema: useGridFormSchema(), submitOnChange: true },
+  formOptions: { 
+    schema: useGridFormSchema(), 
+    submitOnChange: true
+   },
   gridOptions: {
     columns: useColumns(onActionClick),
     height: 'auto',
@@ -44,10 +47,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
   } as VxeTableGridOptions,
 });
 
-function onActionClick({
-  code,
-  row,
-}: OnActionClickParams<SystemPositionApi.SystemPosition>) {
+function onActionClick({code,row,}: OnActionClickParams<SystemPositionApi.SystemPosition>) {
   switch (code) {
     case 'delete': {
       onDelete(row);
