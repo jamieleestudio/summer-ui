@@ -333,7 +333,7 @@ export interface FormRenderProps<
 
   /**
    * 表单栅格布局
-   * @default "grid-cols-1"
+   * @default "grid-cols-5"
    */
   wrapperClass?: WrapperClassType;
 }
@@ -358,9 +358,9 @@ export interface VbenFormProps<
    * 操作按钮组的样式
    * newLine: 在新行显示。rowEnd: 在行内显示，靠右对齐（默认）。inline: 使用grid默认样式
    */
-  actionLayout?: 'inline' | 'newLine' | 'rowEnd';
+  actionLayout?: 'inline' | 'newLine' | 'rowEnd' | 'firstLine';
   /**
-   * 操作按钮组显示位置，默认靠右显示
+   * 操作按钮组显示位置，默认靠左显示
    */
   actionPosition?: 'center' | 'left' | 'right';
   /**

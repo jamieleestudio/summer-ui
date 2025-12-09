@@ -26,6 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
   layout: 'horizontal',
   resetButtonOptions: () => ({}),
   showCollapseButton: false,
+  actionButtonsReverse: true,
   showDefaultActions: true,
   submitButtonOptions: () => ({}),
   wrapperClass: 'grid-cols-1',

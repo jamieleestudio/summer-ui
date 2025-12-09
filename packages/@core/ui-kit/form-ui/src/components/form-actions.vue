@@ -77,8 +77,8 @@ watch(
 
 const actionWrapperClass = computed(() => {
   const props = unref(rootProps);
-  const actionLayout = props.actionLayout || 'rowEnd';
-  const actionPosition = props.actionPosition || 'right';
+  const actionLayout = props.actionLayout || 'firstLine';
+  const actionPosition = props.actionPosition || 'left';
 
   const cls = [
     'flex',
@@ -99,7 +99,14 @@ const actionWrapperClass = computed(() => {
       cls.push('col-[-2/-1]');
       break;
     }
-    // 'inline' 不需要额外类名，保持默认
+    case 'firstLine': {
+      //row 1 col 2 开始
+      cls.push('row-start-1');
+      cls.push('col-start-2');
+      // 占满一整行
+      cls.push('col-span-full');
+      break;
+    }
   }
 
   switch (actionPosition) {

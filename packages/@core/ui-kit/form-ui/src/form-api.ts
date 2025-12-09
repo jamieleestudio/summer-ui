@@ -29,7 +29,7 @@ import {
 function getDefaultState(): VbenFormProps {
   return {
     actionWrapperClass: '',
-    collapsed: false,
+    collapsed: true,
     collapsedRows: 1,
     collapseTriggerResize: false,
     commonConfig: {},

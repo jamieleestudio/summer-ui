@@ -109,13 +109,6 @@ export function useGridFormSchema(): VbenFormSchema[] {
     },
     {
       component: 'Input',
-      fieldName: '_spacer',
-      hideLabel: true,
-      formItemClass: 'col-span-3 col-start-3',
-      componentProps: { class: 'hidden' },
-    },
-    {
-      component: 'Input',
       fieldName: 'firstName',
       label: $t('system.user.realName'), // Use realName label for search by name
     },
