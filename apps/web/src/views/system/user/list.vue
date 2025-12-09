@@ -22,8 +22,16 @@ const [FormDrawer, formDrawerApi] = useVbenDrawer({
   destroyOnClose: true,
 });
 
-const [Grid, gridApi] = useVbenVxeGrid({
-  formOptions: { schema: useGridFormSchema(), submitOnChange: true },
+const [Grid, gridApi] = useVbenVxeGrid({formOptions: { 
+    schema: useGridFormSchema(), 
+    submitOnChange: false,
+    actionLayout: 'inline',
+    actionPosition: 'left',
+    showDefaultActions: true,
+    // wrapperClass: 'grid-cols-5',
+    compact: true,
+    wrapperClass: 'grid-cols-5',
+  },
   gridOptions: {
     columns: useColumns(onActionClick, onEnableChange),
     height: 'auto',

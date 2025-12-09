@@ -13,7 +13,7 @@ export function useFormSchema(): VbenFormSchema[] {
       component: 'Input',
       fieldName: 'account',
       label: $t('system.user.username'), // Keep label "Username" or "Account"
-      rules: 'required',
+      rules: 'required'
     },
     {
       component: 'InputPassword',
@@ -106,6 +106,13 @@ export function useGridFormSchema(): VbenFormSchema[] {
       component: 'Input',
       fieldName: 'account',
       label: $t('system.user.username'),
+    },
+    {
+      component: 'Input',
+      fieldName: '_spacer',
+      hideLabel: true,
+      formItemClass: 'col-span-3 col-start-3',
+      componentProps: { class: 'hidden' },
     },
     {
       component: 'Input',

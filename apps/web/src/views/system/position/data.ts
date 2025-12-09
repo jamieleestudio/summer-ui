@@ -46,23 +46,6 @@ export function useGridFormSchema(): VbenFormSchema[] {
       fieldName: 'name',
       label: $t('system.position.positioinName'),
     },
-    {
-      component: 'Input',
-      fieldName: 'code',
-      label: $t('system.position.code'),
-    },
-    {
-      component: 'Select',
-      componentProps: {
-        allowClear: true,
-        options: [
-          { label: $t('common.enabled'), value: true },
-          { label: $t('common.disabled'), value: false },
-        ],
-      },
-      fieldName: 'enabled',
-      label: $t('system.position.status'),
-    },
   ];
 }
 
