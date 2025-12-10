@@ -53,12 +53,12 @@ const overviewItems: AnalysisOverviewItem[] = [
 
 const chartTabs: TabOption[] = [
   {
-    label: '流量趋势',
-    value: 'trends',
-  },
-  {
     label: '月访问量',
     value: 'visits',
+  },
+  {
+    label: '流量趋势',
+    value: 'trends',
   },
 ];
 </script>
