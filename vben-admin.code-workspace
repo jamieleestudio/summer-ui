@@ -1,9 +1,6 @@
 {
   "folders": [
-    {
-      "name": "@vben/backend-mock",
-      "path": "apps/backend-mock",
-    },
+
     {
       "name": "@vben/web",
       "path": "apps/web",

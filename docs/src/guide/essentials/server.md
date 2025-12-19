@@ -33,7 +33,7 @@ VITE_GLOB_API_URL=/api
 
 开发环境时候，如果需要处理跨域，接口地址在对应的应用目录下的 `vite.config.mts` 文件中配置：
 
-```ts{8-16}
+```ts{8-12}
 // apps/web-antd/vite.config.mts
 import { defineConfig } from '@vben/vite-config';
 
@@ -41,12 +41,10 @@ export default defineConfig(async () => {
   return {
     vite: {
       server: {
-        proxy: {// [!code focus:11]
+        proxy: {
           '/api': {
             changeOrigin: true,
             rewrite: (path) => path.replace(/^\/api/, ''),
-            // mock代理目标地址
-            target: 'http://localhost:5320/api',
             ws: true,
           },
         },
@@ -359,29 +357,4 @@ async function doRefreshToken() {
 }
 ```
 
-## 数据 Mock
 
-::: tip 生产环境 Mock
-
-新版本不再支持生产环境 mock，请使用真实接口。
-
-:::
-
-Mock 数据是前端开发过程中必不可少的一环，是分离前后端开发的关键链路。通过预先跟服务器端约定好的接口，模拟请求数据甚至逻辑，能够让前端开发独立自主，不会被服务端的开发进程所阻塞。
-
-项目使用 [Nitro](https://nitro.unjs.io/) 来进行本地 mock 数据处理。其原理是本地额外启动一个后端服务，是一个真实的后端服务，可以处理请求，返回数据。
-
-### Nitro 使用
-
-Mock 服务代码位于`apps/backend-mock`目录下，无需手动启动，已经集成在项目中，只需要在项目根目录下运行`pnpm dev`即可，运行成功之后，控制台会打印 `http://localhost:5320/api`, 访问该地址即可查看 mock 服务。
-
-[Nitro](https://nitro.unjs.io/) 语法简单，可以根据自己的需求进行配置及开发，具体配置可以查看 [Nitro 文档](https://nitro.unjs.io/)。
-
-## 关闭 Mock 服务
-
-mock的本质是一个真实的后端服务，如果不需要 mock 服务，可以在项目根目录下的 `.env.development` 文件中配置 `VITE_NITRO_MOCK=false` 即可关闭 mock 服务。
-
-```bash
-# .env.development
-VITE_NITRO_MOCK=false
-```
