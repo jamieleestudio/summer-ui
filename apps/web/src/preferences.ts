@@ -8,6 +8,14 @@ import { defineOverridesPreferences } from '@vben/preferences';
 export const overridesPreferences = defineOverridesPreferences({
   // overrides
   app: {
+    layout: "mixed-nav",
     name: import.meta.env.VITE_APP_TITLE,
+  },
+  theme: {
+    builtinType: "custom",
+    colorPrimary: "hsl(135 43% 25%)",
+    mode: "light",
+    radius: "0.25",
+    semiDarkHeader: true
   },
 });
