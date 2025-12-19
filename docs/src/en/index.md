@@ -65,12 +65,7 @@ features:
     details: Standardized monorepo architecture using pnpm + monorepo + turbo for enterprise-level development standards.
     link: https://turbo.build/
     linkText: Official Site
-  - title: Nitro Mock Server
-    icon:
-      src: /logos/nitro.svg
-    details: Built-in Nitro Mock service makes your mock service more powerful.
-    link: https://nitro.unjs.io/
-    linkText: Official Site
+
 ---
 
 <VbenContributors />
