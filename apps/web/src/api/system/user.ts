@@ -106,5 +106,8 @@ async function updateUser(id: string, data: SystemUserApi.UserUpdateRequest) {
 async function deleteUser(id: string) {
   return requestClient.delete(`/users/${id}`);
 }
+async function updateUserEnabled(id: string, enable: boolean) {
+  return requestClient.put(`/users/${id}/enabled`, { enable });
+}
 
-export { createUser, deleteUser, getUserList, updateUser };
+export { createUser, deleteUser, getUserList, updateUser, updateUserEnabled };

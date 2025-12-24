@@ -11,7 +11,11 @@ import { Plus } from '@vben/icons';
 import { Button, message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteUser, getUserList, updateUser } from '#/api/system/user';
+import {
+  deleteUser,
+  getUserList,
+  updateUserEnabled,
+} from '#/api/system/user';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
@@ -97,10 +101,10 @@ async function onEnableChange(
   newEnable: boolean,
   row: SystemUserApi.SystemUser,
 ) {
-  return updateUser(row.id, { enable: newEnable })
+  return updateUserEnabled(row.id, newEnable)
     .then(() => {
       message.success(
-        $t('ui.actionMessage.updateSuccess', [
+        $t('ui.actionMessage.operationSuccess', [
           $t('system.user.status'),
           newEnable ? $t('common.enabled') : $t('common.disabled'),
         ]),
