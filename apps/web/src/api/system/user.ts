@@ -14,6 +14,7 @@ export namespace SystemUserApi {
     avatar?: string;
     description?: string;
     enable: boolean;
+    enabled: boolean;
     departmentId?: string;
     departmentName?: string;
     positionIds?: string[];
@@ -80,7 +81,8 @@ async function getUserList(params: Recordable<any>) {
     return {
       ...item,
       // Ensure booleans are booleans
-      enable: Boolean(item?.enable),
+      enable: Boolean(item?.enable ?? item?.enabled),
+      enabled: Boolean(item?.enabled ?? item?.enable),
     } as SystemUserApi.SystemUser;
   });
 
@@ -106,8 +108,8 @@ async function updateUser(id: string, data: SystemUserApi.UserUpdateRequest) {
 async function deleteUser(id: string) {
   return requestClient.delete(`/users/${id}`);
 }
-async function updateUserEnabled(id: string, enable: boolean) {
-  return requestClient.put(`/users/${id}/enabled`, { enable });
+async function updateUserEnabled(id: string, enabled: boolean) {
+  return requestClient.put(`/users/${id}/enabled`, { enabled });
 }
 
 export { createUser, deleteUser, getUserList, updateUser, updateUserEnabled };

@@ -126,7 +126,7 @@ export function useGridFormSchema(): VbenFormSchema[] {
           { label: $t('common.disabled'), value: false },
         ],
       },
-      fieldName: 'enable',
+      fieldName: 'enabled',
       label: $t('system.user.status'),
     },
   ];
@@ -162,7 +162,7 @@ export function useColumns(
           unCheckedValue: false,
         },
       },
-      field: 'enable',
+      field: 'enabled',
       title: $t('system.user.status'),
       width: 100,
     },
